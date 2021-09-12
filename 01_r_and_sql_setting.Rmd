@@ -2,9 +2,10 @@
 output: html_document
 ---
 
-```{r setup1, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      eval = FALSE)
+                      eval = TRUE,
+                      message = FALSE)
 ```
 
 # データハンドリングの考え方/環境準備

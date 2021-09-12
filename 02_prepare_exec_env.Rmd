@@ -2,10 +2,6 @@
 output: html_document
 ---
 
-```{r setup2, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      eval = TRUE)
-```
 
 # 実行環境の準備
 
@@ -187,7 +183,7 @@ df_log <- data.frame(
 knitr::kable(sample_n(df_log, 10))
 ```
 
-あわせて、itemのmaster tableを作成します
+今回、時間が大きな数値になってますが、これは仕様的にunixtimeになっているためです。あわせて、itemのmaster tableを作成します
 
 ```{r generate_data2}
 # itemのmaster dfを作成

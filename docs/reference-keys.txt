@@ -1,7 +1,3 @@
-データハンドリング実践入門---rとsqlの比較
-目的
-構成
-制約
 データハンドリングの考え方環境準備
 構成-1
 データハンドリングの考え方
@@ -14,7 +10,7 @@ sqlrdbの基礎
 イメージ-1
 環境準備-1
 sqliteの準備
-参考資料-1
+参考資料
 実行環境の準備
 libraryの準備
 rrstudio-sqliteのインストール
@@ -31,3 +27,10 @@ db側の準備
 q1-日別の売上集計
 rによるデータハンドリング-1
 sqlによるデータハンドリング-1
+pivotハンドリング---rとsqlでの比較
+データの準備-1
+from-long-to-wide
+expand-to-wide-by-sql
+expand-to-wide-by-r
+from-wide-to-long
+expand-to-long-by-sql

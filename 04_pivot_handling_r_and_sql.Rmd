@@ -1,0 +1,173 @@
+---
+output: html_document
+---
+
+
+# pivotハンドリング - RとSQLでの比較
+
+ここでは、long-wide変換であるpivotを取り上げます。pivot(long-wide)変換自体の説明については省略します。
+
+## データの準備
+
+いわゆるlong型になっているデータとしては、dbには`t_df_log`がlong型になってます。なのでこれを今回は利用します。
+
+wide型になっているデータとしては、dbには書き込みテストで利用した `t_iris`があります。
+これを利用してみましょう。
+
+## from long to wide
+
+long型からwide型へ変換します。`t_df-log`で、item別個数を横へ広げます。レコードはユーザー単位です。つまり、｢ユーザーごとに各アイテムを何個ずつ購入したか｣を示す表になります。
+
+### expand to wide by SQL
+
+先にSQLで記述します。
+
+別ファイルでsqlを書いて、それを呼び出すこととします。
+
+
+```{r to_wide_by_sql}
+# library
+library(tidyverse)
+library(DBI)
+
+
+# 先にsqlファイルを読み込む関数を準備
+read_sql <- function(file) {
+  string <- readLines(file)
+  res <- paste(string, collapse = "\n")
+  return(res)
+}
+
+# queryを格納
+query_02_wider <- read_sql("sql/pivot_wide.sql")
+# queryを表示
+cat(query_02_wider)
+
+# 問い合わせる
+con <- dbConnect(con)
+df_res_02_sql <- dbGetQuery(con,
+                            query_02_wider)
+head(df_res_02_sql)
+
+```
+
+SQLiteでwideに展開しようとするなら、基本的には上記のようなクエリになります。unitで考えると以下のようになります:
+
+1. unit_1: pivot_wide
+    1. 入力: `t_df_log`を準備
+    1. 削除: 
+        1. 列選択: idとitemだけを取り出す
+        1. (行選択はスキップ)
+    1. 加工: 
+        1. item -> item_1
+            1. 変換: item = item_1なら`1`、そうでないなら`0`
+            1. 集約: これを`sum` 
+        1. item -> item_2
+            1. 変換: item = item_2なら`1`、そうでないなら`0`
+            1. 合計: これを`sum`
+        1. item -> item_3
+            1. 変換: item = item_3なら`1`、そうでないなら`0`
+            1. 合計: これを`sum` 
+        1. item -> item_4
+            1. 変換: item = item_4なら`1`、そうでないなら`0`
+            1. 合計: これを`sum`
+        1. item -> item_5
+            1. 変換: item = item_5なら`1`、そうでないなら`0`
+            1. 合計: これを`sum`
+    1. 集約:
+        1. 集約化変数: id
+    1. (結合はスキップ)
+
+今回のsqlではunit_1だけになりましたが、他の書き方もあります:
+
+```{r to_wide_by_sql2}
+# queryを格納
+query_02_wider2 <- read_sql("sql/pivot_wide2.sql")
+# queryを表示
+cat(query_02_wider2)
+
+# 問い合わせる
+con <- dbConnect(con)
+df_res_02_sql2 <- dbGetQuery(con,
+                             query_02_wider2)
+head(df_res_02_sql2)
+```
+
+今回はこのような処理になります:
+
+1. unit 1: id, itemでcount集計
+    1. 入力: `t_df_log`
+    1. 削除: id, itemを選択
+    1. 加工:
+        1. count: -> cnt
+    1. 集約:
+        1. 集約化変数: id, item
+    1. (結合はないのでスキップ)
+    1. 出力: unit_1
+1. unit 2: pivot wide
+    1. 入力: `unit_1`
+    1. 削除: 
+        1. 列選択: idを取り出す
+    1. 加工: 
+        1. item -> item_1
+            1. 変換: item = item_1なら`cnt`、そうでないなら`null`
+            1. 集約: これを`max` 
+        1. item -> item_2
+            1. 変換: item = item_2なら`cnt`、そうでないなら`null`
+            1. 集約: これを`max`
+        1. item -> item_3
+            1. 変換: item = item_3なら`cnt`、そうでないなら`null`
+            1. 集約: これを`max` 
+        1. item -> item_4
+            1. 変換: item = item_4なら`cnt`、そうでないなら`null`
+            1. 集約: これを`max`
+        1. item -> item_5
+            1. 変換: item = item_5なら`cnt`、そうでないなら`null`
+            1. 集約: これを`max`
+    1. 集約:
+        1. 集約化変数: id
+    1. (結合はスキップ)
+
+unit 2の加工でmaxを使っているけど、これは対象レコードが1しかないはずなので、
+別にmaxでもminでもどれでも同値になります(でもなぜかmaxを利用する例が多い)。
+
+最初の例は、この2つめの例をショートカットしたものとなります。集約ロジックがただのcountなのであんまり変わらないですが、複雑な計算をさせる場合は効率性などは意識したほうがいいでしょう。
+
+
+### expand to wide by R
+
+`tidyr::pivot_wider`使ってください。ちなみにSQLのところで記述してるアプローチ2つをRでもかき分けることができます。ぜひチャレンジしてみてください。
+
+そして、書けた後でSQLのクエリ/ロジックと比較してみてください。pivotがどのような処理をしているかが見えてくると思います。
+
+
+## from wide to long
+
+`t_iris`を使ってやってみましょう
+
+### expand to long by SQL
+
+正直めんどくさいのねん...SQLは別ファイルで書きました。
+
+```{r to_long_by_sql}
+# queryを格納
+query_02_long <- read_sql("sql/pivot_long.sql")
+# queryを表示
+cat(query_02_long)
+
+# 問い合わせる
+con <- dbConnect(con)
+df_res_02_sql3 <- dbGetQuery(con,
+                             query_02_long)
+sample_n(df_res_02_sql3, 10)
+```
+
+unit記述、ぜひやってみてください!
+
+
+
+```{r}
+# 開いたconは閉じよう
+dbDisconnect(con)
+```
+
