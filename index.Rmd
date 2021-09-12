@@ -1,0 +1,16 @@
+---
+title: "データハンドリング実践入門 - RとSQLの比較"
+author: "前田和寛(@kazutan)"
+date: "2021-09-12"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+---
+
+# はじめに {-}
+
+本編は次のページ以降になります
+
+## 参考資料 {-}
+
+WIP...

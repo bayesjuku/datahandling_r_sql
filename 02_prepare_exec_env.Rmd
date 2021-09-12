@@ -1,0 +1,234 @@
+---
+output: html_document
+---
+
+```{r setup2, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE)
+```
+
+# 実行環境の準備
+
+
+## libraryの準備
+
+個人的にRStudio上で全て作業したいので、それを前提とします。
+
+### R/RStudio, SQLiteのインストール
+
+-> 前節参照
+
+### RStudioからSQLiteを扱えるようにする
+
+- [RSQLiteパッケージ](https://rsqlite.r-dbi.org/index.html)
+    - RからSQLiteへアクセスするためのドライバなどを提供するパッケージ
+        - 開発陣が大物ばかり
+- [DBIパッケージ](https://dbi.r-dbi.org/)
+    - RからDBへ接続する関数を提供するパッケージ
+    - RSQLiteパッケージをインストールすれば多分入るはず
+
+
+## RSQLite チュートリアル
+
+- これを読もう
+    - <https://rsqlite.r-dbi.org/articles/rsqlite>
+      - これを簡単に試しましょう
+
+### 接続テスト
+
+...その前に、｢開いたconは閉じる｣を頭に入れておいてください。
+
+```{r setup_db, eval=TRUE, message=FALSE}
+
+# library
+
+library(DBI)
+library(tidyverse)
+library(lubridate)
+
+
+# connect DB 
+
+# 指定したファイルパスへsqliteで接続(connect)
+# 指定したパスにファイルがない場合、下のファイル名で作成される
+mydb <- dbConnect(RSQLite::SQLite(), "my-db.sqlite")
+
+# 接続を切断
+dbDisconnect(mydb)
+
+# 接続先を削除
+# SQLiteで上記のようにディスク上のファイルを指定した場合、｢そのファイルが削除｣される
+unlink("my-db.sqlite")
+
+# mydbは｢接続情報｣オブジェクト
+# なので、これを使って再度connectできる
+# さっきunlinkしたけど、これでまた復帰します
+mydb <- dbConnect(mydb)
+
+# dbConnectを書いたらすぐにdbDisconnectを書きましょう
+dbDisconnect(mydb)
+```
+
+### tableを作る
+
+とりあえず、Rのいくつかのdata.frameをDB内のtableに書き出してみましょう
+
+```{r write_table, eval=TRUE}
+# write table and check-----
+
+# dbへconnect
+mydb_writetbl <- dbConnect(RSQLite::SQLite(), # DB接続のドライバを指定
+                           "my-db.sqlite") # 接続先を指定(今回のSQLiteはファイルパス)
+
+# write table - iris
+dbWriteTable(mydb_writetbl, # dbConnectオブジェクト、すなわち接続するDB
+             "t_iris", # table名
+             iris, # 書き込むデータ。ここではiris
+             overwrite = TRUE) # 上書きするか。実際には細心の注意を
+# write table - mtcars
+dbWriteTable(mydb_writetbl,
+             "t_mtcars",
+             mtcars,
+             overwrite = TRUE) # 細心の注意を
+
+# 閉じる
+dbDisconnect(mydb_writetbl) # 開いたconは閉じろ
+```
+
+これで、2つのtableに書き出せたので、実際に入っているか確認しましょう
+
+```{r read_table, eval=TRUE}
+# もう一回DBにつなぐ
+# connectionオブジェクトだけを指定してもOK
+con <- dbConnect(mydb)
+
+# DB内の全てのtableをリストアップ
+dbListTables(con)
+```
+これで2つのテーブルが書けたので、簡単にテストをしていきましょう。
+
+### tableへの問い合わせ(query)
+
+queryとは｢問い合わせる｣という意味です。なのでここでは｢DBにぶん投げる問い合わせ内容｣となります。
+
+```{r access_tbl, eval=TRUE}
+# irisを5行もってくる
+dbGetQuery(con, #接続先
+           'select * from t_iris limit 5') # SQL query
+```
+
+もちろんsqlの結果をR側のオブジェクトとして受けることもできます
+
+```{r access_tbl2}
+iris_from_db <- dbGetQuery(con,
+                           'select * from t_mtcars')
+head(iris_from_db, 3)
+```
+
+現在、パラメータ化も使えるようになってます
+
+```{r access_tbl_w_params}
+# 詳細はチュートリアルを参照
+dbGetQuery(con, 'SELECT * FROM t_iris WHERE "Sepal.Length" < :x', 
+  params = list(x = 4.6))
+```
+
+
+```{r close_con}
+# 開いたconは閉じろ
+dbDisconnect(con)
+```
+
+## 今回のデータの準備
+
+今回は、以下のsiteの仮想データを利用します:
+
+- [ログデータ処理で始めるlubridate入門](https://kazutan.github.io/SappoRoR8/index.html)
+    - [ここの2](https://kazutan.github.io/SappoRoR8/02-makelog_duration.html)に、仮想ログデータを作成するRコードがあります
+
+ただ、今回はDB的なデータ構造にしたいので、DBの正規化をしてitem masterを分離させます。正規化については適当にググってください。
+
+### R側の仮想データ作成
+
+上記のサイトのコードをベースに作成します:
+
+```{r generate_data_1}
+# params setting
+start <- "2018-1-1 00:00:00" #開始日
+n <- 10000 # 購入件数
+duration_days <- 50 # ログの期間(日数)
+list_price <- c(100, 500, 1000, 2000, 5000) # アイテムの価格リスト
+list_item <- paste("item", 1:length(list_price), sep = "_") # アイテムリスト
+list_item_p <- c(100, 50, 10, 5, 2) # 発生比
+list_id <- 1000001:1000300 # 会員id
+
+# ログデータ生成
+df_log <- data.frame(
+  # タイムスタンプを作成
+  # 開始日時を生成
+  stamp = ymd_hms(start) +
+    # 0-50までの整数からランダムに10000件生成し、それを日数データに変換して足す
+    days(sample(0:duration_days, n, replace = TRUE)) +
+    # 0-23までの整数からランダムに10000件生成し、それを時間データに変換して足す
+    hours(sample(0:23, n, replace = TRUE)) +
+    # 0-59までの整数からランダムに10000件生成し、それを分データに変換して足す
+    minutes(sample(0:59, n, replace = TRUE)) +
+    # 0-59までの整数からランダムに10000件生成し、それを病データに変換して足す
+    seconds(sample(0:59, n, replace = TRUE)),
+  # 会員IDをランダムに生成
+  id = sample(list_id, n, replace = TRUE),
+  # アイテム名をランダムに生成
+  item = sample(list_item, n, replace = TRUE, prob = list_item_p)
+) %>%
+  # ログデータっぽく、タイムスタンプで並べ替える
+  arrange(stamp)
+
+# 生成できているかを確認
+knitr::kable(sample_n(df_log, 10))
+```
+
+あわせて、itemのmaster tableを作成します
+
+```{r generate_data2}
+# itemのmaster dfを作成
+df_item_master <- tibble(
+  item = list_item,
+  value = list_price
+)
+
+# 生成できているかを確認
+knitr::kable(df_item_master)
+```
+
+
+### DB側の準備
+
+作成したRのオブジェクトをtableに書き出します
+
+```{r write_tbl_logdatas}
+# conを開く
+con <- dbConnect(con)
+# tbl書き込み
+dbWriteTable(con,
+             "t_df_log",
+             df_log,
+             overwrite = TRUE) #今日は何度も書くので
+dbWriteTable(con,
+             "t_df_item_master",
+             df_item_master,
+             overwrite = TRUE) #今日は何度も書くので
+
+# 生成できているかをチェック
+dbGetQuery(con,
+           'select * from t_df_log limit 5')
+dbGetQuery(con,
+           'select * from t_df_item_master')
+```
+
+これでDBに作成できたので、実際にRを比較していきましょう。**開いたconは閉じましょう**。
+
+```{r write_tbl_logdates_close}
+# 開いたconは閉じろ
+dbDisconnect(con)
+```
+

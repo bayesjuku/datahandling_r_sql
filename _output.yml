@@ -1,0 +1,11 @@
+bookdown::gitbook:
+  #css: style.css
+  split_by: "rmd"
+  config:
+    toc:
+      before: |
+        <li><a href="./index.html">データハンドリング実践入門 - RとSQLの比較</a></li>
+      after: |
+  pandoc_args: [
+        "--from", "markdown+autolink_bare_uris+tex_math_single_backslash-implicit_figures"
+  ]

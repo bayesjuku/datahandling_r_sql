@@ -1,0 +1,144 @@
+---
+output: html_document
+---
+
+```{r setup3, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE)
+```
+
+# ログデータハンドリング - RとSQLでの比較
+
+
+## データの準備
+
+前節で作成したデータはDBにあります。てことでR側はそこから取得しましょう。
+
+```{r get_data_01, message=FALSE}
+# library
+library(DBI)
+library(tidyverse)
+library(lubridate)
+
+# db con
+# 事前に前節でデータを作成している前提です
+con <-dbConnect(RSQLite::SQLite(), "my-db.sqlite")
+
+# read tableして格納
+df_log <- dbReadTable(con,
+                      "t_df_log")
+df_item_master <- dbReadTable(con,
+                              "t_df_item_master")
+
+```
+
+SQLは直接queryを投げるので、ここでは特に必要ありません。
+
+
+## Q1 日別の売上集計
+
+日別の売上合計を算出しましょう
+
+### Rによるデータハンドリング
+
+```{r handle_01_by_r}
+df_res_01_r <- df_log %>% 
+  left_join(df_item_master) %>% # item masterの情報でvalueを持ってくる
+  mutate(date_time = as_datetime(stamp, tz = 'Asia/Tokyo'), # なぜかunixtimeになってた…
+         date = date(date_time)) %>% # timestampからdateに変換
+  group_by(date) %>% # 日付でgroup_by
+  summarise(
+    n = n(),
+    total = sum(value)
+  )
+
+
+# チェック
+head(df_res_01_r, 5)
+```
+
+unitに分けて考えます
+
+1. unit_1: logに価格を追加
+    1. 入力: `df_log`を準備
+    1. (削除はスキップ)
+    1. (加工はスキップ)
+    1. (集約はスキップ)
+    1. 結合:
+        - `df_item_master`を準備
+        - `left join`
+        - keyになる変数は両方とも `item` 
+    1. 出力: %>% unit_2へ
+1. unit_2 日付のカラムを作成
+    1. 入力: unit_1からpipe
+    1. (削除はスキップ)
+    1. 加工
+        1. stampがunixtimeなのでdate-time型 `date_time`へ
+        1. date-time型 `date_time` から date型 `date` へ
+    1. (集約はスキップ)
+    1. (結合はスキップ)
+    1. 出力: %>% unit_3へ
+1. unit_3: 集約して集計
+    1. 入力: unit_2からpipe
+    1. 削除: date以外を除外
+    1. 加工
+        1. count -> nへ
+        1. sum -> totalへ
+    1. 集約:
+        1. dateでgroup_by
+    1. (結合はスキップ)
+    1. 出力: `df_res_01_r`として出力
+
+このような感じになります。
+
+### SQLによるデータハンドリング
+
+では、SQLによって同じ操作を行います
+
+```{r handle_01_by_sql}
+# sql_queryを作成
+query_01 <- "
+select
+  date
+  ,count(*) as n
+  ,sum(value) as total
+from (
+  select
+    unit_1.*
+    ,date(datetime(stamp, 'unixepoch', 'localtime')) as date --後述
+  from (
+    select
+      log.*
+      ,im.value
+    from
+      t_df_log as log
+    left join
+      t_df_item_master as im
+      on log.item = im.item
+  ) as unit_1
+) as unit_2
+group by
+  1
+order by
+  1
+"
+
+df_res_01_sql <- dbGetQuery(con,
+                            query_01)
+
+head(df_res_01_sql, 5)
+```
+
+同一の結果が得られました。
+
+さて、上記のSQLコードはRで書いたunitでの考え方に合わせてます。(続く…)
+
+
+
+
+```{r close}
+# 開いたconは閉じろ
+dbDisconnect(con)
+
+```
+

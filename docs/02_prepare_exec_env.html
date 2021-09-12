@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 実行環境の準備 | データハンドリング実践入門 - RとSQLの比較</title>
+  <meta name="description" content="3 実行環境の準備 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 実行環境の準備 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 実行環境の準備 | データハンドリング実践入門 - RとSQLの比較" />
+  
+  
+  
+
+<meta name="author" content="前田和寛(@kazutan)" />
+
+
+<meta name="date" content="2021-09-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="01_r_and_sql_setting.html"/>
+<link rel="next" href="03_logdata_handling_r_and_sql.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">データハンドリング実践入門 - RとSQLの比較</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>はじめに</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#参考資料"><i class="fa fa-check"></i>参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="00_intro.html"><a href="00_intro.html"><i class="fa fa-check"></i><b>1</b> データハンドリング実践入門 - RとSQLの比較</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="00_intro.html"><a href="00_intro.html#目的"><i class="fa fa-check"></i><b>1.1</b> 目的</a></li>
+<li class="chapter" data-level="1.2" data-path="00_intro.html"><a href="00_intro.html#構成"><i class="fa fa-check"></i><b>1.2</b> 構成</a></li>
+<li class="chapter" data-level="1.3" data-path="00_intro.html"><a href="00_intro.html#制約"><i class="fa fa-check"></i><b>1.3</b> 制約</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html"><i class="fa fa-check"></i><b>2</b> データハンドリングの考え方/環境準備</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#構成-1"><i class="fa fa-check"></i><b>2.1</b> 構成</a></li>
+<li class="chapter" data-level="2.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#データハンドリングの考え方"><i class="fa fa-check"></i><b>2.2</b> データハンドリングの考え方</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#基本的な流れ"><i class="fa fa-check"></i><b>2.2.1</b> 基本的な流れ</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#rによるデータハンドリング"><i class="fa fa-check"></i><b>2.3</b> Rによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ"><i class="fa fa-check"></i><b>2.3.1</b> イメージ</a></li>
+<li class="chapter" data-level="2.3.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備"><i class="fa fa-check"></i><b>2.3.2</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlによるデータハンドリング"><i class="fa fa-check"></i><b>2.4</b> SQLによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlrdbの基礎"><i class="fa fa-check"></i><b>2.4.1</b> SQL/RDBの基礎</a></li>
+<li class="chapter" data-level="2.4.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ-1"><i class="fa fa-check"></i><b>2.4.2</b> イメージ</a></li>
+<li class="chapter" data-level="2.4.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備-1"><i class="fa fa-check"></i><b>2.4.3</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#参考資料-1"><i class="fa fa-check"></i><b>2.5</b> 参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html"><i class="fa fa-check"></i><b>3</b> 実行環境の準備</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#libraryの準備"><i class="fa fa-check"></i><b>3.1</b> libraryの準備</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rrstudio-sqliteのインストール"><i class="fa fa-check"></i><b>3.1.1</b> R/RStudio, SQLiteのインストール</a></li>
+<li class="chapter" data-level="3.1.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rstudioからsqliteを扱えるようにする"><i class="fa fa-check"></i><b>3.1.2</b> RStudioからSQLiteを扱えるようにする</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rsqlite-チュートリアル"><i class="fa fa-check"></i><b>3.2</b> RSQLite チュートリアル</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#接続テスト"><i class="fa fa-check"></i><b>3.2.1</b> 接続テスト</a></li>
+<li class="chapter" data-level="3.2.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableを作る"><i class="fa fa-check"></i><b>3.2.2</b> tableを作る</a></li>
+<li class="chapter" data-level="3.2.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableへの問い合わせquery"><i class="fa fa-check"></i><b>3.2.3</b> tableへの問い合わせ(query)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#今回のデータの準備"><i class="fa fa-check"></i><b>3.3</b> 今回のデータの準備</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#r側の仮想データ作成"><i class="fa fa-check"></i><b>3.3.1</b> R側の仮想データ作成</a></li>
+<li class="chapter" data-level="3.3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#db側の準備"><i class="fa fa-check"></i><b>3.3.2</b> DB側の準備</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html"><i class="fa fa-check"></i><b>4</b> ログデータハンドリング - RとSQLでの比較</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#データの準備"><i class="fa fa-check"></i><b>4.1</b> データの準備</a></li>
+<li class="chapter" data-level="4.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#q1-日別の売上集計"><i class="fa fa-check"></i><b>4.2</b> Q1 日別の売上集計</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#rによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.1</b> Rによるデータハンドリング</a></li>
+<li class="chapter" data-level="4.2.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#sqlによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.2</b> SQLによるデータハンドリング</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">データハンドリング実践入門 - RとSQLの比較</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="実行環境の準備" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> 実行環境の準備</h1>
+<div id="libraryの準備" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> libraryの準備</h2>
+<p>個人的にRStudio上で全て作業したいので、それを前提とします。</p>
+<div id="rrstudio-sqliteのインストール" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> R/RStudio, SQLiteのインストール</h3>
+<p>-&gt; 前節参照</p>
+</div>
+<div id="rstudioからsqliteを扱えるようにする" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> RStudioからSQLiteを扱えるようにする</h3>
+<ul>
+<li><a href="https://rsqlite.r-dbi.org/index.html">RSQLiteパッケージ</a>
+<ul>
+<li>RからSQLiteへアクセスするためのドライバなどを提供するパッケージ
+<ul>
+<li>開発陣が大物ばかり</li>
+</ul></li>
+</ul></li>
+<li><a href="https://dbi.r-dbi.org/">DBIパッケージ</a>
+<ul>
+<li>RからDBへ接続する関数を提供するパッケージ</li>
+<li>RSQLiteパッケージをインストールすれば多分入るはず</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="rsqlite-チュートリアル" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> RSQLite チュートリアル</h2>
+<ul>
+<li>これを読もう
+<ul>
+<li><a href="https://rsqlite.r-dbi.org/articles/rsqlite" class="uri">https://rsqlite.r-dbi.org/articles/rsqlite</a>
+<ul>
+<li>これを簡単に試しましょう</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="接続テスト" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> 接続テスト</h3>
+<p>…その前に、｢開いたconは閉じる｣を頭に入れておいてください。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="02_prepare_exec_env.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
+<span id="cb1-2"><a href="02_prepare_exec_env.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="02_prepare_exec_env.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb1-4"><a href="02_prepare_exec_env.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="02_prepare_exec_env.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-6"><a href="02_prepare_exec_env.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="02_prepare_exec_env.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="02_prepare_exec_env.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># connect DB </span></span>
+<span id="cb1-9"><a href="02_prepare_exec_env.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="02_prepare_exec_env.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定したファイルパスへsqliteで接続(connect)</span></span>
+<span id="cb1-11"><a href="02_prepare_exec_env.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定したパスにファイルがない場合、下のファイル名で作成される</span></span>
+<span id="cb1-12"><a href="02_prepare_exec_env.html#cb1-12" aria-hidden="true" tabindex="-1"></a>mydb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">&quot;my-db.sqlite&quot;</span>)</span>
+<span id="cb1-13"><a href="02_prepare_exec_env.html#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="02_prepare_exec_env.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 接続を切断</span></span>
+<span id="cb1-15"><a href="02_prepare_exec_env.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(mydb)</span>
+<span id="cb1-16"><a href="02_prepare_exec_env.html#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="02_prepare_exec_env.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 接続先を削除</span></span>
+<span id="cb1-18"><a href="02_prepare_exec_env.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># SQLiteで上記のようにディスク上のファイルを指定した場合、｢そのファイルが削除｣される</span></span>
+<span id="cb1-19"><a href="02_prepare_exec_env.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">&quot;my-db.sqlite&quot;</span>)</span>
+<span id="cb1-20"><a href="02_prepare_exec_env.html#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="02_prepare_exec_env.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># mydbは｢接続情報｣オブジェクト</span></span>
+<span id="cb1-22"><a href="02_prepare_exec_env.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># なので、これを使って再度connectできる</span></span>
+<span id="cb1-23"><a href="02_prepare_exec_env.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># さっきunlinkしたけど、これでまた復帰します</span></span>
+<span id="cb1-24"><a href="02_prepare_exec_env.html#cb1-24" aria-hidden="true" tabindex="-1"></a>mydb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(mydb)</span>
+<span id="cb1-25"><a href="02_prepare_exec_env.html#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="02_prepare_exec_env.html#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># dbConnectを書いたらすぐにdbDisconnectを書きましょう</span></span>
+<span id="cb1-27"><a href="02_prepare_exec_env.html#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(mydb)</span></code></pre></div>
+</div>
+<div id="tableを作る" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> tableを作る</h3>
+<p>とりあえず、Rのいくつかのdata.frameをDB内のtableに書き出してみましょう</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="02_prepare_exec_env.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write table and check-----</span></span>
+<span id="cb2-2"><a href="02_prepare_exec_env.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="02_prepare_exec_env.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dbへconnect</span></span>
+<span id="cb2-4"><a href="02_prepare_exec_env.html#cb2-4" aria-hidden="true" tabindex="-1"></a>mydb_writetbl <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="co"># DB接続のドライバを指定</span></span>
+<span id="cb2-5"><a href="02_prepare_exec_env.html#cb2-5" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;my-db.sqlite&quot;</span>) <span class="co"># 接続先を指定(今回のSQLiteはファイルパス)</span></span>
+<span id="cb2-6"><a href="02_prepare_exec_env.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="02_prepare_exec_env.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write table - iris</span></span>
+<span id="cb2-8"><a href="02_prepare_exec_env.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(mydb_writetbl, <span class="co"># dbConnectオブジェクト、すなわち接続するDB</span></span>
+<span id="cb2-9"><a href="02_prepare_exec_env.html#cb2-9" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;t_iris&quot;</span>, <span class="co"># table名</span></span>
+<span id="cb2-10"><a href="02_prepare_exec_env.html#cb2-10" aria-hidden="true" tabindex="-1"></a>             iris, <span class="co"># 書き込むデータ。ここではiris</span></span>
+<span id="cb2-11"><a href="02_prepare_exec_env.html#cb2-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co"># 上書きするか。実際には細心の注意を</span></span>
+<span id="cb2-12"><a href="02_prepare_exec_env.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># write table - mtcars</span></span>
+<span id="cb2-13"><a href="02_prepare_exec_env.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(mydb_writetbl,</span>
+<span id="cb2-14"><a href="02_prepare_exec_env.html#cb2-14" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;t_mtcars&quot;</span>,</span>
+<span id="cb2-15"><a href="02_prepare_exec_env.html#cb2-15" aria-hidden="true" tabindex="-1"></a>             mtcars,</span>
+<span id="cb2-16"><a href="02_prepare_exec_env.html#cb2-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co"># 細心の注意を</span></span>
+<span id="cb2-17"><a href="02_prepare_exec_env.html#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="02_prepare_exec_env.html#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 閉じる</span></span>
+<span id="cb2-19"><a href="02_prepare_exec_env.html#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(mydb_writetbl) <span class="co"># 開いたconは閉じろ</span></span></code></pre></div>
+<p>これで、2つのtableに書き出せたので、実際に入っているか確認しましょう</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="02_prepare_exec_env.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># もう一回DBにつなぐ</span></span>
+<span id="cb3-2"><a href="02_prepare_exec_env.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># connectionオブジェクトだけを指定してもOK</span></span>
+<span id="cb3-3"><a href="02_prepare_exec_env.html#cb3-3" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(mydb)</span>
+<span id="cb3-4"><a href="02_prepare_exec_env.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="02_prepare_exec_env.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># DB内の全てのtableをリストアップ</span></span>
+<span id="cb3-6"><a href="02_prepare_exec_env.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code></pre></div>
+<pre><code>## [1] &quot;t_iris&quot;   &quot;t_mtcars&quot;</code></pre>
+<p>これで2つのテーブルが書けたので、簡単にテストをしていきましょう。</p>
+</div>
+<div id="tableへの問い合わせquery" class="section level3" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> tableへの問い合わせ(query)</h3>
+<p>queryとは｢問い合わせる｣という意味です。なのでここでは｢DBにぶん投げる問い合わせ内容｣となります。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="02_prepare_exec_env.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># irisを5行もってくる</span></span>
+<span id="cb5-2"><a href="02_prepare_exec_env.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="co">#接続先</span></span>
+<span id="cb5-3"><a href="02_prepare_exec_env.html#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;select * from t_iris limit 5&#39;</span>) <span class="co"># SQL query</span></span></code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa</code></pre>
+<p>もちろんsqlの結果をR側のオブジェクトとして受けることもできます</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="02_prepare_exec_env.html#cb7-1" aria-hidden="true" tabindex="-1"></a>iris_from_db <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb7-2"><a href="02_prepare_exec_env.html#cb7-2" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&#39;select * from t_mtcars&#39;</span>)</span>
+<span id="cb7-3"><a href="02_prepare_exec_env.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris_from_db, <span class="dv">3</span>)</span></code></pre></div>
+<p>現在、パラメータ化も使えるようになってます</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="02_prepare_exec_env.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 詳細はチュートリアルを参照</span></span>
+<span id="cb8-2"><a href="02_prepare_exec_env.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="st">&#39;SELECT * FROM t_iris WHERE &quot;Sepal.Length&quot; &lt; :x&#39;</span>, </span>
+<span id="cb8-3"><a href="02_prepare_exec_env.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">params =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fl">4.6</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="02_prepare_exec_env.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 開いたconは閉じろ</span></span>
+<span id="cb9-2"><a href="02_prepare_exec_env.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
+</div>
+</div>
+<div id="今回のデータの準備" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> 今回のデータの準備</h2>
+<p>今回は、以下のsiteの仮想データを利用します:</p>
+<ul>
+<li><a href="https://kazutan.github.io/SappoRoR8/index.html">ログデータ処理で始めるlubridate入門</a>
+<ul>
+<li><a href="https://kazutan.github.io/SappoRoR8/02-makelog_duration.html">ここの2</a>に、仮想ログデータを作成するRコードがあります</li>
+</ul></li>
+</ul>
+<p>ただ、今回はDB的なデータ構造にしたいので、DBの正規化をしてitem masterを分離させます。正規化については適当にググってください。</p>
+<div id="r側の仮想データ作成" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> R側の仮想データ作成</h3>
+<p>上記のサイトのコードをベースに作成します:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="02_prepare_exec_env.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># params setting</span></span>
+<span id="cb10-2"><a href="02_prepare_exec_env.html#cb10-2" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="st">&quot;2018-1-1 00:00:00&quot;</span> <span class="co">#開始日</span></span>
+<span id="cb10-3"><a href="02_prepare_exec_env.html#cb10-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># 購入件数</span></span>
+<span id="cb10-4"><a href="02_prepare_exec_env.html#cb10-4" aria-hidden="true" tabindex="-1"></a>duration_days <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="co"># ログの期間(日数)</span></span>
+<span id="cb10-5"><a href="02_prepare_exec_env.html#cb10-5" aria-hidden="true" tabindex="-1"></a>list_price <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">5000</span>) <span class="co"># アイテムの価格リスト</span></span>
+<span id="cb10-6"><a href="02_prepare_exec_env.html#cb10-6" aria-hidden="true" tabindex="-1"></a>list_item <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;item&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_price), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>) <span class="co"># アイテムリスト</span></span>
+<span id="cb10-7"><a href="02_prepare_exec_env.html#cb10-7" aria-hidden="true" tabindex="-1"></a>list_item_p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">2</span>) <span class="co"># 発生比</span></span>
+<span id="cb10-8"><a href="02_prepare_exec_env.html#cb10-8" aria-hidden="true" tabindex="-1"></a>list_id <span class="ot">&lt;-</span> <span class="dv">1000001</span><span class="sc">:</span><span class="dv">1000300</span> <span class="co"># 会員id</span></span>
+<span id="cb10-9"><a href="02_prepare_exec_env.html#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="02_prepare_exec_env.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ログデータ生成</span></span>
+<span id="cb10-11"><a href="02_prepare_exec_env.html#cb10-11" aria-hidden="true" tabindex="-1"></a>df_log <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-12"><a href="02_prepare_exec_env.html#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># タイムスタンプを作成</span></span>
+<span id="cb10-13"><a href="02_prepare_exec_env.html#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 開始日時を生成</span></span>
+<span id="cb10-14"><a href="02_prepare_exec_env.html#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">stamp =</span> <span class="fu">ymd_hms</span>(start) <span class="sc">+</span></span>
+<span id="cb10-15"><a href="02_prepare_exec_env.html#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0-50までの整数からランダムに10000件生成し、それを日数データに変換して足す</span></span>
+<span id="cb10-16"><a href="02_prepare_exec_env.html#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">days</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span>duration_days, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="02_prepare_exec_env.html#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0-23までの整数からランダムに10000件生成し、それを時間データに変換して足す</span></span>
+<span id="cb10-18"><a href="02_prepare_exec_env.html#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hours</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="02_prepare_exec_env.html#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0-59までの整数からランダムに10000件生成し、それを分データに変換して足す</span></span>
+<span id="cb10-20"><a href="02_prepare_exec_env.html#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">minutes</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">59</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb10-21"><a href="02_prepare_exec_env.html#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0-59までの整数からランダムに10000件生成し、それを病データに変換して足す</span></span>
+<span id="cb10-22"><a href="02_prepare_exec_env.html#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">seconds</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">59</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb10-23"><a href="02_prepare_exec_env.html#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 会員IDをランダムに生成</span></span>
+<span id="cb10-24"><a href="02_prepare_exec_env.html#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">sample</span>(list_id, n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-25"><a href="02_prepare_exec_env.html#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># アイテム名をランダムに生成</span></span>
+<span id="cb10-26"><a href="02_prepare_exec_env.html#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">item =</span> <span class="fu">sample</span>(list_item, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> list_item_p)</span>
+<span id="cb10-27"><a href="02_prepare_exec_env.html#cb10-27" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-28"><a href="02_prepare_exec_env.html#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ログデータっぽく、タイムスタンプで並べ替える</span></span>
+<span id="cb10-29"><a href="02_prepare_exec_env.html#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(stamp)</span>
+<span id="cb10-30"><a href="02_prepare_exec_env.html#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="02_prepare_exec_env.html#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成できているかを確認</span></span>
+<span id="cb10-32"><a href="02_prepare_exec_env.html#cb10-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">sample_n</span>(df_log, <span class="dv">10</span>))</span></code></pre></div>
+<p>あわせて、itemのmaster tableを作成します</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="02_prepare_exec_env.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># itemのmaster dfを作成</span></span>
+<span id="cb11-2"><a href="02_prepare_exec_env.html#cb11-2" aria-hidden="true" tabindex="-1"></a>df_item_master <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-3"><a href="02_prepare_exec_env.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">item =</span> list_item,</span>
+<span id="cb11-4"><a href="02_prepare_exec_env.html#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> list_price</span>
+<span id="cb11-5"><a href="02_prepare_exec_env.html#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="02_prepare_exec_env.html#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="02_prepare_exec_env.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成できているかを確認</span></span>
+<span id="cb11-8"><a href="02_prepare_exec_env.html#cb11-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(df_item_master)</span></code></pre></div>
+</div>
+<div id="db側の準備" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> DB側の準備</h3>
+<p>作成したRのオブジェクトをtableに書き出します</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="02_prepare_exec_env.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conを開く</span></span>
+<span id="cb12-2"><a href="02_prepare_exec_env.html#cb12-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(con)</span>
+<span id="cb12-3"><a href="02_prepare_exec_env.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># tbl書き込み</span></span>
+<span id="cb12-4"><a href="02_prepare_exec_env.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con,</span>
+<span id="cb12-5"><a href="02_prepare_exec_env.html#cb12-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;t_df_log&quot;</span>,</span>
+<span id="cb12-6"><a href="02_prepare_exec_env.html#cb12-6" aria-hidden="true" tabindex="-1"></a>             df_log,</span>
+<span id="cb12-7"><a href="02_prepare_exec_env.html#cb12-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#今日は何度も書くので</span></span>
+<span id="cb12-8"><a href="02_prepare_exec_env.html#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con,</span>
+<span id="cb12-9"><a href="02_prepare_exec_env.html#cb12-9" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;t_df_item_master&quot;</span>,</span>
+<span id="cb12-10"><a href="02_prepare_exec_env.html#cb12-10" aria-hidden="true" tabindex="-1"></a>             df_item_master,</span>
+<span id="cb12-11"><a href="02_prepare_exec_env.html#cb12-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#今日は何度も書くので</span></span>
+<span id="cb12-12"><a href="02_prepare_exec_env.html#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="02_prepare_exec_env.html#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成できているかをチェック</span></span>
+<span id="cb12-14"><a href="02_prepare_exec_env.html#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb12-15"><a href="02_prepare_exec_env.html#cb12-15" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;select * from t_df_log limit 5&#39;</span>)</span>
+<span id="cb12-16"><a href="02_prepare_exec_env.html#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb12-17"><a href="02_prepare_exec_env.html#cb12-17" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;select * from t_df_item_master&#39;</span>)</span></code></pre></div>
+<p>これでDBに作成できたので、実際にRを比較していきましょう。<strong>開いたconは閉じましょう</strong>。</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="02_prepare_exec_env.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 開いたconは閉じろ</span></span>
+<span id="cb13-2"><a href="02_prepare_exec_env.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="01_r_and_sql_setting.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="03_logdata_handling_r_and_sql.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

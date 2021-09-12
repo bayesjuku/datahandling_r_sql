@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 ログデータハンドリング - RとSQLでの比較 | データハンドリング実践入門 - RとSQLの比較</title>
+  <meta name="description" content="4 ログデータハンドリング - RとSQLでの比較 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 ログデータハンドリング - RとSQLでの比較 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 ログデータハンドリング - RとSQLでの比較 | データハンドリング実践入門 - RとSQLの比較" />
+  
+  
+  
+
+<meta name="author" content="前田和寛(@kazutan)" />
+
+
+<meta name="date" content="2021-09-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="02_prepare_exec_env.html"/>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">データハンドリング実践入門 - RとSQLの比較</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>はじめに</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#参考資料"><i class="fa fa-check"></i>参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="00_intro.html"><a href="00_intro.html"><i class="fa fa-check"></i><b>1</b> データハンドリング実践入門 - RとSQLの比較</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="00_intro.html"><a href="00_intro.html#目的"><i class="fa fa-check"></i><b>1.1</b> 目的</a></li>
+<li class="chapter" data-level="1.2" data-path="00_intro.html"><a href="00_intro.html#構成"><i class="fa fa-check"></i><b>1.2</b> 構成</a></li>
+<li class="chapter" data-level="1.3" data-path="00_intro.html"><a href="00_intro.html#制約"><i class="fa fa-check"></i><b>1.3</b> 制約</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html"><i class="fa fa-check"></i><b>2</b> データハンドリングの考え方/環境準備</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#構成-1"><i class="fa fa-check"></i><b>2.1</b> 構成</a></li>
+<li class="chapter" data-level="2.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#データハンドリングの考え方"><i class="fa fa-check"></i><b>2.2</b> データハンドリングの考え方</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#基本的な流れ"><i class="fa fa-check"></i><b>2.2.1</b> 基本的な流れ</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#rによるデータハンドリング"><i class="fa fa-check"></i><b>2.3</b> Rによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ"><i class="fa fa-check"></i><b>2.3.1</b> イメージ</a></li>
+<li class="chapter" data-level="2.3.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備"><i class="fa fa-check"></i><b>2.3.2</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlによるデータハンドリング"><i class="fa fa-check"></i><b>2.4</b> SQLによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlrdbの基礎"><i class="fa fa-check"></i><b>2.4.1</b> SQL/RDBの基礎</a></li>
+<li class="chapter" data-level="2.4.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ-1"><i class="fa fa-check"></i><b>2.4.2</b> イメージ</a></li>
+<li class="chapter" data-level="2.4.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備-1"><i class="fa fa-check"></i><b>2.4.3</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#参考資料-1"><i class="fa fa-check"></i><b>2.5</b> 参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html"><i class="fa fa-check"></i><b>3</b> 実行環境の準備</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#libraryの準備"><i class="fa fa-check"></i><b>3.1</b> libraryの準備</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rrstudio-sqliteのインストール"><i class="fa fa-check"></i><b>3.1.1</b> R/RStudio, SQLiteのインストール</a></li>
+<li class="chapter" data-level="3.1.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rstudioからsqliteを扱えるようにする"><i class="fa fa-check"></i><b>3.1.2</b> RStudioからSQLiteを扱えるようにする</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rsqlite-チュートリアル"><i class="fa fa-check"></i><b>3.2</b> RSQLite チュートリアル</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#接続テスト"><i class="fa fa-check"></i><b>3.2.1</b> 接続テスト</a></li>
+<li class="chapter" data-level="3.2.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableを作る"><i class="fa fa-check"></i><b>3.2.2</b> tableを作る</a></li>
+<li class="chapter" data-level="3.2.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableへの問い合わせquery"><i class="fa fa-check"></i><b>3.2.3</b> tableへの問い合わせ(query)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#今回のデータの準備"><i class="fa fa-check"></i><b>3.3</b> 今回のデータの準備</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#r側の仮想データ作成"><i class="fa fa-check"></i><b>3.3.1</b> R側の仮想データ作成</a></li>
+<li class="chapter" data-level="3.3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#db側の準備"><i class="fa fa-check"></i><b>3.3.2</b> DB側の準備</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html"><i class="fa fa-check"></i><b>4</b> ログデータハンドリング - RとSQLでの比較</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#データの準備"><i class="fa fa-check"></i><b>4.1</b> データの準備</a></li>
+<li class="chapter" data-level="4.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#q1-日別の売上集計"><i class="fa fa-check"></i><b>4.2</b> Q1 日別の売上集計</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#rによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.1</b> Rによるデータハンドリング</a></li>
+<li class="chapter" data-level="4.2.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#sqlによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.2</b> SQLによるデータハンドリング</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">データハンドリング実践入門 - RとSQLの比較</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ログデータハンドリング---rとsqlでの比較" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> ログデータハンドリング - RとSQLでの比較</h1>
+<div id="データの準備" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> データの準備</h2>
+<p>前節で作成したデータはDBにあります。てことでR側はそこから取得しましょう。</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="03_logdata_handling_r_and_sql.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
+<span id="cb14-2"><a href="03_logdata_handling_r_and_sql.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb14-3"><a href="03_logdata_handling_r_and_sql.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-4"><a href="03_logdata_handling_r_and_sql.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb14-5"><a href="03_logdata_handling_r_and_sql.html#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="03_logdata_handling_r_and_sql.html#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># db con</span></span>
+<span id="cb14-7"><a href="03_logdata_handling_r_and_sql.html#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 事前に前節でデータを作成している前提です</span></span>
+<span id="cb14-8"><a href="03_logdata_handling_r_and_sql.html#cb14-8" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span><span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">&quot;my-db.sqlite&quot;</span>)</span>
+<span id="cb14-9"><a href="03_logdata_handling_r_and_sql.html#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="03_logdata_handling_r_and_sql.html#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># read tableして格納</span></span>
+<span id="cb14-11"><a href="03_logdata_handling_r_and_sql.html#cb14-11" aria-hidden="true" tabindex="-1"></a>df_log <span class="ot">&lt;-</span> <span class="fu">dbReadTable</span>(con,</span>
+<span id="cb14-12"><a href="03_logdata_handling_r_and_sql.html#cb14-12" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;t_df_log&quot;</span>)</span>
+<span id="cb14-13"><a href="03_logdata_handling_r_and_sql.html#cb14-13" aria-hidden="true" tabindex="-1"></a>df_item_master <span class="ot">&lt;-</span> <span class="fu">dbReadTable</span>(con,</span>
+<span id="cb14-14"><a href="03_logdata_handling_r_and_sql.html#cb14-14" aria-hidden="true" tabindex="-1"></a>                              <span class="st">&quot;t_df_item_master&quot;</span>)</span></code></pre></div>
+<p>SQLは直接queryを投げるので、ここでは特に必要ありません。</p>
+</div>
+<div id="q1-日別の売上集計" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Q1 日別の売上集計</h2>
+<p>日別の売上合計を算出しましょう</p>
+<div id="rによるデータハンドリング-1" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Rによるデータハンドリング</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="03_logdata_handling_r_and_sql.html#cb15-1" aria-hidden="true" tabindex="-1"></a>df_res_01_r <span class="ot">&lt;-</span> df_log <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="03_logdata_handling_r_and_sql.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(df_item_master) <span class="sc">%&gt;%</span> <span class="co"># item masterの情報でvalueを持ってくる</span></span>
+<span id="cb15-3"><a href="03_logdata_handling_r_and_sql.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_time =</span> <span class="fu">as_datetime</span>(stamp, <span class="at">tz =</span> <span class="st">&#39;Asia/Tokyo&#39;</span>), <span class="co"># なぜかunixtimeになってた…</span></span>
+<span id="cb15-4"><a href="03_logdata_handling_r_and_sql.html#cb15-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">date =</span> <span class="fu">date</span>(date_time)) <span class="sc">%&gt;%</span> <span class="co"># timestampからdateに変換</span></span>
+<span id="cb15-5"><a href="03_logdata_handling_r_and_sql.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span> <span class="co"># 日付でgroup_by</span></span>
+<span id="cb15-6"><a href="03_logdata_handling_r_and_sql.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-7"><a href="03_logdata_handling_r_and_sql.html#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb15-8"><a href="03_logdata_handling_r_and_sql.html#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(value)</span>
+<span id="cb15-9"><a href="03_logdata_handling_r_and_sql.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-10"><a href="03_logdata_handling_r_and_sql.html#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="03_logdata_handling_r_and_sql.html#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="03_logdata_handling_r_and_sql.html#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># チェック</span></span>
+<span id="cb15-13"><a href="03_logdata_handling_r_and_sql.html#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_res_01_r, <span class="dv">5</span>)</span></code></pre></div>
+<p>unitに分けて考えます</p>
+<ol style="list-style-type: decimal">
+<li>unit_1: logに価格を追加
+<ol style="list-style-type: decimal">
+<li>入力: <code>df_log</code>を準備</li>
+<li>(削除はスキップ)</li>
+<li>(加工はスキップ)</li>
+<li>(集約はスキップ)</li>
+<li>結合:
+<ul>
+<li><code>df_item_master</code>を準備</li>
+<li><code>left join</code></li>
+<li>keyになる変数は両方とも <code>item</code></li>
+</ul></li>
+<li>出力: %&gt;% unit_2へ</li>
+</ol></li>
+<li>unit_2 日付のカラムを作成
+<ol style="list-style-type: decimal">
+<li>入力: unit_1からpipe</li>
+<li>(削除はスキップ)</li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li>stampがunixtimeなのでdate-time型 <code>date_time</code>へ</li>
+<li>date-time型 <code>date_time</code> から date型 <code>date</code> へ</li>
+</ol></li>
+<li>(集約はスキップ)</li>
+<li>(結合はスキップ)</li>
+<li>出力: %&gt;% unit_3へ</li>
+</ol></li>
+<li>unit_3: 集約して集計
+<ol style="list-style-type: decimal">
+<li>入力: unit_2からpipe</li>
+<li>削除: date以外を除外</li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li>count -&gt; nへ</li>
+<li>sum -&gt; totalへ</li>
+</ol></li>
+<li>集約:
+<ol style="list-style-type: decimal">
+<li>dateでgroup_by</li>
+</ol></li>
+<li>(結合はスキップ)</li>
+<li>出力: <code>df_res_01_r</code>として出力</li>
+</ol></li>
+</ol>
+<p>このような感じになります。</p>
+</div>
+<div id="sqlによるデータハンドリング-1" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> SQLによるデータハンドリング</h3>
+<p>では、SQLによって同じ操作を行います</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="03_logdata_handling_r_and_sql.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sql_queryを作成</span></span>
+<span id="cb16-2"><a href="03_logdata_handling_r_and_sql.html#cb16-2" aria-hidden="true" tabindex="-1"></a>query_01 <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb16-3"><a href="03_logdata_handling_r_and_sql.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">select</span></span>
+<span id="cb16-4"><a href="03_logdata_handling_r_and_sql.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">  date</span></span>
+<span id="cb16-5"><a href="03_logdata_handling_r_and_sql.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="st">  ,count(*) as n</span></span>
+<span id="cb16-6"><a href="03_logdata_handling_r_and_sql.html#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="st">  ,sum(value) as total</span></span>
+<span id="cb16-7"><a href="03_logdata_handling_r_and_sql.html#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="st">from (</span></span>
+<span id="cb16-8"><a href="03_logdata_handling_r_and_sql.html#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="st">  select</span></span>
+<span id="cb16-9"><a href="03_logdata_handling_r_and_sql.html#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="st">    unit_1.*</span></span>
+<span id="cb16-10"><a href="03_logdata_handling_r_and_sql.html#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="st">    ,date(datetime(stamp, &#39;unixepoch&#39;, &#39;localtime&#39;)) as date --後述</span></span>
+<span id="cb16-11"><a href="03_logdata_handling_r_and_sql.html#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="st">  from (</span></span>
+<span id="cb16-12"><a href="03_logdata_handling_r_and_sql.html#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="st">    select</span></span>
+<span id="cb16-13"><a href="03_logdata_handling_r_and_sql.html#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="st">      log.*</span></span>
+<span id="cb16-14"><a href="03_logdata_handling_r_and_sql.html#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="st">      ,im.value</span></span>
+<span id="cb16-15"><a href="03_logdata_handling_r_and_sql.html#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="st">    from</span></span>
+<span id="cb16-16"><a href="03_logdata_handling_r_and_sql.html#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="st">      t_df_log as log</span></span>
+<span id="cb16-17"><a href="03_logdata_handling_r_and_sql.html#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="st">    left join</span></span>
+<span id="cb16-18"><a href="03_logdata_handling_r_and_sql.html#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="st">      t_df_item_master as im</span></span>
+<span id="cb16-19"><a href="03_logdata_handling_r_and_sql.html#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="st">      on log.item = im.item</span></span>
+<span id="cb16-20"><a href="03_logdata_handling_r_and_sql.html#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="st">  ) as unit_1</span></span>
+<span id="cb16-21"><a href="03_logdata_handling_r_and_sql.html#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="st">) as unit_2</span></span>
+<span id="cb16-22"><a href="03_logdata_handling_r_and_sql.html#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="st">group by</span></span>
+<span id="cb16-23"><a href="03_logdata_handling_r_and_sql.html#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="st">  1</span></span>
+<span id="cb16-24"><a href="03_logdata_handling_r_and_sql.html#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="st">order by</span></span>
+<span id="cb16-25"><a href="03_logdata_handling_r_and_sql.html#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="st">  1</span></span>
+<span id="cb16-26"><a href="03_logdata_handling_r_and_sql.html#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb16-27"><a href="03_logdata_handling_r_and_sql.html#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="03_logdata_handling_r_and_sql.html#cb16-28" aria-hidden="true" tabindex="-1"></a>df_res_01_sql <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb16-29"><a href="03_logdata_handling_r_and_sql.html#cb16-29" aria-hidden="true" tabindex="-1"></a>                            query_01)</span>
+<span id="cb16-30"><a href="03_logdata_handling_r_and_sql.html#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="03_logdata_handling_r_and_sql.html#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_res_01_sql, <span class="dv">5</span>)</span></code></pre></div>
+<p>同一の結果が得られました。</p>
+<p>さて、上記のSQLコードはRで書いたunitでの考え方に合わせてます。(続く…)</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="03_logdata_handling_r_and_sql.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 開いたconは閉じろ</span></span>
+<span id="cb17-2"><a href="03_logdata_handling_r_and_sql.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="02_prepare_exec_env.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

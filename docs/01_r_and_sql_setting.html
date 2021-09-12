@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 データハンドリングの考え方/環境準備 | データハンドリング実践入門 - RとSQLの比較</title>
+  <meta name="description" content="2 データハンドリングの考え方/環境準備 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 データハンドリングの考え方/環境準備 | データハンドリング実践入門 - RとSQLの比較" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 データハンドリングの考え方/環境準備 | データハンドリング実践入門 - RとSQLの比較" />
+  
+  
+  
+
+<meta name="author" content="前田和寛(@kazutan)" />
+
+
+<meta name="date" content="2021-09-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="00_intro.html"/>
+<link rel="next" href="02_prepare_exec_env.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">データハンドリング実践入門 - RとSQLの比較</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>はじめに</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#参考資料"><i class="fa fa-check"></i>参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="00_intro.html"><a href="00_intro.html"><i class="fa fa-check"></i><b>1</b> データハンドリング実践入門 - RとSQLの比較</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="00_intro.html"><a href="00_intro.html#目的"><i class="fa fa-check"></i><b>1.1</b> 目的</a></li>
+<li class="chapter" data-level="1.2" data-path="00_intro.html"><a href="00_intro.html#構成"><i class="fa fa-check"></i><b>1.2</b> 構成</a></li>
+<li class="chapter" data-level="1.3" data-path="00_intro.html"><a href="00_intro.html#制約"><i class="fa fa-check"></i><b>1.3</b> 制約</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html"><i class="fa fa-check"></i><b>2</b> データハンドリングの考え方/環境準備</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#構成-1"><i class="fa fa-check"></i><b>2.1</b> 構成</a></li>
+<li class="chapter" data-level="2.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#データハンドリングの考え方"><i class="fa fa-check"></i><b>2.2</b> データハンドリングの考え方</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#基本的な流れ"><i class="fa fa-check"></i><b>2.2.1</b> 基本的な流れ</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#rによるデータハンドリング"><i class="fa fa-check"></i><b>2.3</b> Rによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ"><i class="fa fa-check"></i><b>2.3.1</b> イメージ</a></li>
+<li class="chapter" data-level="2.3.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備"><i class="fa fa-check"></i><b>2.3.2</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlによるデータハンドリング"><i class="fa fa-check"></i><b>2.4</b> SQLによるデータハンドリング</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#sqlrdbの基礎"><i class="fa fa-check"></i><b>2.4.1</b> SQL/RDBの基礎</a></li>
+<li class="chapter" data-level="2.4.2" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#イメージ-1"><i class="fa fa-check"></i><b>2.4.2</b> イメージ</a></li>
+<li class="chapter" data-level="2.4.3" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#環境準備-1"><i class="fa fa-check"></i><b>2.4.3</b> 環境準備</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="01_r_and_sql_setting.html"><a href="01_r_and_sql_setting.html#参考資料-1"><i class="fa fa-check"></i><b>2.5</b> 参考資料</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html"><i class="fa fa-check"></i><b>3</b> 実行環境の準備</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#libraryの準備"><i class="fa fa-check"></i><b>3.1</b> libraryの準備</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rrstudio-sqliteのインストール"><i class="fa fa-check"></i><b>3.1.1</b> R/RStudio, SQLiteのインストール</a></li>
+<li class="chapter" data-level="3.1.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rstudioからsqliteを扱えるようにする"><i class="fa fa-check"></i><b>3.1.2</b> RStudioからSQLiteを扱えるようにする</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#rsqlite-チュートリアル"><i class="fa fa-check"></i><b>3.2</b> RSQLite チュートリアル</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#接続テスト"><i class="fa fa-check"></i><b>3.2.1</b> 接続テスト</a></li>
+<li class="chapter" data-level="3.2.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableを作る"><i class="fa fa-check"></i><b>3.2.2</b> tableを作る</a></li>
+<li class="chapter" data-level="3.2.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#tableへの問い合わせquery"><i class="fa fa-check"></i><b>3.2.3</b> tableへの問い合わせ(query)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#今回のデータの準備"><i class="fa fa-check"></i><b>3.3</b> 今回のデータの準備</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#r側の仮想データ作成"><i class="fa fa-check"></i><b>3.3.1</b> R側の仮想データ作成</a></li>
+<li class="chapter" data-level="3.3.2" data-path="02_prepare_exec_env.html"><a href="02_prepare_exec_env.html#db側の準備"><i class="fa fa-check"></i><b>3.3.2</b> DB側の準備</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html"><i class="fa fa-check"></i><b>4</b> ログデータハンドリング - RとSQLでの比較</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#データの準備"><i class="fa fa-check"></i><b>4.1</b> データの準備</a></li>
+<li class="chapter" data-level="4.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#q1-日別の売上集計"><i class="fa fa-check"></i><b>4.2</b> Q1 日別の売上集計</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#rによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.1</b> Rによるデータハンドリング</a></li>
+<li class="chapter" data-level="4.2.2" data-path="03_logdata_handling_r_and_sql.html"><a href="03_logdata_handling_r_and_sql.html#sqlによるデータハンドリング-1"><i class="fa fa-check"></i><b>4.2.2</b> SQLによるデータハンドリング</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">データハンドリング実践入門 - RとSQLの比較</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="データハンドリングの考え方環境準備" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> データハンドリングの考え方/環境準備</h1>
+<div id="構成-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> 構成</h2>
+<ul>
+<li>データハンドリングの考え方
+<ul>
+<li>基本的な流れ</li>
+</ul></li>
+<li>Rによるデータハンドリング
+<ul>
+<li>イメージ</li>
+<li>環境準備</li>
+</ul></li>
+<li>SQLによるデータハンドリング
+<ul>
+<li>イメージ</li>
+<li>環境準備</li>
+</ul></li>
+</ul>
+</div>
+<div id="データハンドリングの考え方" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> データハンドリングの考え方</h2>
+<p>ぶっちゃけ、料理と一緒ですね。</p>
+<div id="基本的な流れ" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> 基本的な流れ</h3>
+<p>データハンドリングは、基本的に以下の流れを1つのunitとして考えます:</p>
+<ol style="list-style-type: decimal">
+<li>データオブジェクトを準備</li>
+<li>削除
+<ol style="list-style-type: decimal">
+<li>カラム(列)の選択/削除(横を変える)</li>
+<li>レコード(行)の選択/削除(縦を変える)</li>
+</ol></li>
+<li>加工/追加
+<ol style="list-style-type: decimal">
+<li>カラム内の値/型の変換
+1 カラムを追加</li>
+</ol></li>
+<li>集約
+<ol style="list-style-type: decimal">
+<li>集約化変数の指定</li>
+<li>集約による行圧縮</li>
+</ol></li>
+<li>結合
+<ol style="list-style-type: decimal">
+<li>結合対象のデータオブジェクトを準備</li>
+<li>結合方向の指定</li>
+<li>データオブジェクト間の結合</li>
+</ol></li>
+<li>データオブジェクトの出力</li>
+</ol>
+<p>そして、あとはこれをつなげていって全体を達成します<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。｢えっ、<code>group_by</code>して集約した後に加工したりするじゃん?｣と思うかもしれません。しかしそれは、以下のように考えることができます:</p>
+<ol style="list-style-type: decimal">
+<li>unit 1
+<ol style="list-style-type: decimal">
+<li><code>df_A</code> を準備</li>
+<li>(削りなしなのでスキップ)</li>
+<li>(加工なしなのでスキップ)</li>
+<li>集約
+<ol style="list-style-type: decimal">
+<li><code>group_by</code> して集計値を出す</li>
+</ol></li>
+<li>(結合なしなのでスキップ)</li>
+<li><code>df_A_01</code> を出力</li>
+</ol></li>
+<li>unit 2
+<ol style="list-style-type: decimal">
+<li><code>df_A_01</code>を準備</li>
+<li>(削りなしなのでスキップ)</li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li><code>sum</code>が<code>mean</code>を超えたら<code>1</code>とする etc…</li>
+</ol></li>
+<li>(集約なしなのでスキップ)</li>
+<li>(結合なしなのでスキップ)</li>
+<li><code>df_A_02</code>を出力</li>
+</ol></li>
+</ol>
+<p>これでスキップをなくすと、以下のようになります:</p>
+<ol style="list-style-type: decimal">
+<li>unit 1
+<ol style="list-style-type: decimal">
+<li><code>df_A</code> を準備</li>
+<li>集約
+<ol style="list-style-type: decimal">
+<li><code>group_by</code> して集計値を出す</li>
+</ol></li>
+<li><code>df_A_01</code> を出力</li>
+</ol></li>
+<li>unit 2
+<ol style="list-style-type: decimal">
+<li><code>df_A_01</code>を準備</li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li><code>sum</code>が<code>mean</code>を超えたら<code>1</code>とする etc…</li>
+</ol></li>
+<li><code>df_A_02</code>を出力</li>
+</ol></li>
+</ol>
+<p>さらに、unit_1の出力とunit_2の準備(入力)は繋がっているので、こういう書き方(太字)もできます:</p>
+<ol style="list-style-type: decimal">
+<li>unit 1
+<ol style="list-style-type: decimal">
+<li><code>df_A</code> を準備</li>
+<li>集約
+<ol style="list-style-type: decimal">
+<li><code>group_by</code> して集計値を出す</li>
+</ol></li>
+<li><code>df_A_01</code> を出力</li>
+</ol></li>
+<li>unit 2
+<ol style="list-style-type: decimal">
+<li><strong>unit 1の出力<code>df_A_01</code>を準備</strong></li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li><code>sum</code>が<code>mean</code>を超えたら<code>1</code>とする etc…</li>
+</ol></li>
+<li><code>df_A_02</code>を出力</li>
+</ol></li>
+</ol>
+<p>これにより、2つのunitが繋がった書き方となります。これで依存関係なども表現できるようになりましたね。</p>
+<p>データハンドリングは、</p>
+<ul>
+<li>最終的に欲しい形のデータを決める</li>
+<li>最終形態に必要なデータを準備</li>
+<li>unitおよびフローを｢計画｣する</li>
+<li>計画したunit flowを実行できるよう｢記述｣する</li>
+<li>記述した計画を実行する</li>
+</ul>
+<p>…となります。データハンドリングをする際は、必ずこれを意識してください。</p>
+</div>
+</div>
+<div id="rによるデータハンドリング" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Rによるデータハンドリング</h2>
+<p>今なら宇宙船本がありますよ! <a href="https://gihyo.jp/book/2021/978-4-297-12170-9" class="uri">https://gihyo.jp/book/2021/978-4-297-12170-9</a></p>
+<div id="イメージ" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> イメージ</h3>
+<p>今回はtidyverseの世界で説明します。</p>
+<p><code>data.frame</code>および<code>tibble</code>は、ともに列志向のデータオブジェクトです。｢列志向｣とは｢データの区切りとしてまず列がある｣というものです。｢dfは7つのcolumnがある｣-&gt;｢1つの列は100のデータを持つ｣…という階層構造になっていることを指します<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。従って、列を意識する必要があります。</p>
+<p>Rでもデータハンドリングの考え方は上述のとおりで、tidyverseはunitの各機能に対応するfunctionを提供しています。また、パイプ演算子はunit間を繋いでいく役目をしていますので、こんな感じの表現もできますね:</p>
+<ol style="list-style-type: decimal">
+<li>unit 1 &amp; unit 2
+<ol style="list-style-type: decimal">
+<li><code>df_A</code> を準備</li>
+<li>集約
+<ol style="list-style-type: decimal">
+<li><code>group_by</code> して集計値を出す</li>
+</ol></li>
+<li>(出力が生成されるけどpipeされる)</li>
+</ol></li>
+<li><code>%&gt;%</code>
+<ol style="list-style-type: decimal">
+<li>( %&gt;% で送られてきたものを受け取る)</li>
+<li>加工
+<ol style="list-style-type: decimal">
+<li><code>sum</code>が<code>mean</code>を超えたら<code>1</code>とする etc…</li>
+</ol></li>
+<li><code>df_A_02</code>を出力</li>
+</ol></li>
+</ol>
+<p>あとはこれをRのスクリプトで｢記述｣すればOKですね。</p>
+</div>
+<div id="環境準備" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> 環境準備</h3>
+<p>今回はtidyverseの世界で説明します。</p>
+<ul>
+<li>R/RStudioをインストール</li>
+<li>tidyverseを入れる</li>
+</ul>
+</div>
+</div>
+<div id="sqlによるデータハンドリング" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> SQLによるデータハンドリング</h2>
+<div id="sqlrdbの基礎" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> SQL/RDBの基礎</h3>
+<p>このスライド以上の説明がないのでこれみてください:</p>
+<p><iframe id="talk_frame_576505" src="https://speakerdeck.com/player/7bac096d97a143ce81981ae2d07e4b81" width="710" height="532" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></p>
+<p>この内容をある程度網羅的に実践して、いくつか実際に書いてみればだいたい書けるようになります。なので基礎部分は省略。</p>
+</div>
+<div id="イメージ-1" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> イメージ</h3>
+<p>SQLは、｢データを加工するプロセスを記述するための言語｣です。なので、上述したunitのプロセスを書き起こしたものとなります。Rではわりとフローを意識したコーディングになるのですが、SQLではunitを非常に意識したコーディングとなります。</p>
+<p>…というか、このunitという観点については、私はSQLでデータハンドリングしててそう考えるようになりました。なので、上述のunitのイメージができるようになれば、あとは辞書的なものを参照しながら書けるようになります。</p>
+</div>
+<div id="環境準備-1" class="section level3" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> 環境準備</h3>
+<p>今回はRDBとして<code>SQLite</code>を利用します。SQLiteは以下の特徴があります:</p>
+<ul>
+<li>ファイルをDB dataとして扱える</li>
+<li>軽量で手元で簡単にできる</li>
+<li>そこまで大きくないデータであれば十分に使える</li>
+<li>独自関数はあんまりない(逆に入門として扱いやすい)</li>
+<li>でもwindow関数は使える
+<ul>
+<li><a href="https://www.sqlite.org/windowfunctions.html" class="uri">https://www.sqlite.org/windowfunctions.html</a></li>
+</ul></li>
+<li>もちろんR/RStudioから利用可能</li>
+</ul>
+<p>(ほかは口頭で)</p>
+<div id="sqliteの準備" class="section level4" number="2.4.3.1">
+<h4><span class="header-section-number">2.4.3.1</span> SQLiteの準備</h4>
+<ul>
+<li>Windowsの場合
+<ul>
+<li>適当にググってください</li>
+</ul></li>
+<li>Macの場合
+<ul>
+<li><strong>デフォルトでインストールされています</strong></li>
+</ul></li>
+<li>Ubuntuの場合
+<ul>
+<li><code>sudo apt install sqlite</code> でOK</li>
+</ul></li>
+</ul>
+<p>Terminalを起動して、<code>sqlite3</code>を実行して出てきてくれればOK。終了コマンドは <code>.quit</code>です。ヘルプは<code>.help</code>で表示されます。</p>
+</div>
+</div>
+</div>
+<div id="参考資料-1" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> 参考資料</h2>
+<p>(WIP)</p>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>ピボット変換(wideとlongの変換)がここには入っていません。これはSQLでのピボット変換コードを見るとわかるのですが、実は｢削除｣｢加工｣｢集約｣｢結合｣を組み合わせて表現できます。また並べ替えについても同様です。<a href="01_r_and_sql_setting.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>よく誤解されますが、Rにおいて行列は｢ベクトル｣です。一見data.frameっぽく見えますが、あれはベクトルに指定した次元情報をもたせただけの｢1つのベクトル｣です。なので全ての値で同一のデータ型しか許可しません。列志向も行志向もないです。<a href="01_r_and_sql_setting.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="00_intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="02_prepare_exec_env.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
